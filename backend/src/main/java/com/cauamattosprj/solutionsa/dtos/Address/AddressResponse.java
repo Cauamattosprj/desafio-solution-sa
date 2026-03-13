@@ -1,4 +1,4 @@
-package com.cauamattosprj.solutionsa.dtos.Address;
+package com.cauamattosprj.solutionsa.dtos.address;
 
 import com.cauamattosprj.solutionsa.models.Address;
 import lombok.Getter;
