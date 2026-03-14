@@ -24,20 +24,16 @@ public class AddressRequest {
     @Size(max = 100)
     private String complement;
 
-    @NotBlank(message = "Logradouro é obrigatório")
     @Size(max = 200)
     private String street;
 
-    @NotBlank(message = "Bairro é obrigatório")
     @Size(max = 100)
     private String neighborhood;
 
-    @NotBlank(message = "Cidade é obrigatória")
     @Size(max = 100)
     private String city;
 
-    @NotBlank(message = "Estado é obrigatório")
-    @Size(min = 2, max = 2, message = "Estado deve ser a sigla com 2 letras")
+    @Pattern(regexp = "^[A-Za-z]{2}$", message = "Estado deve ser a sigla com 2 letras")
     private String state;
 
     private boolean main = false;
