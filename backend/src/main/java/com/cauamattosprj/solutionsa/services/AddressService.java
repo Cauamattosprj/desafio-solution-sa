@@ -21,10 +21,12 @@ public class AddressService {
 
     private final AddressRepository addressRepository;
     private final UserRepository userRepository;
+    private final CepService cepService;
 
-    public AddressService(AddressRepository addressRepository, UserRepository userRepository) {
+    public AddressService(AddressRepository addressRepository, UserRepository userRepository, CepService cepService) {
         this.addressRepository = addressRepository;
         this.userRepository = userRepository;
+        this.cepService = cepService;
     }
 
     public List<AddressResponse> findAllByUser(UUID userId) {
@@ -52,15 +54,17 @@ public class AddressService {
             addressRepository.unsetMainByUserId(userId, UUID.randomUUID()); // nenhum a excluir ainda
         }
 
+        var viaCep = cepService.lookup(request.getCep());
+
         Address address = Address.builder()
                 .user(user)
                 .cep(request.getCep())
                 .number(request.getNumber())
                 .complement(request.getComplement())
-                .street(request.getStreet())
-                .neighborhood(request.getNeighborhood())
-                .city(request.getCity())
-                .state(request.getState())
+                .street(org.springframework.util.StringUtils.hasText(request.getStreet()) ? request.getStreet() : viaCep.getStreet())
+                .neighborhood(org.springframework.util.StringUtils.hasText(request.getNeighborhood()) ? request.getNeighborhood() : viaCep.getNeighborhood())
+                .city(org.springframework.util.StringUtils.hasText(request.getCity()) ? request.getCity() : viaCep.getCity())
+                .state(org.springframework.util.StringUtils.hasText(request.getState()) ? request.getState() : viaCep.getState())
                 .main(request.isMain())
                 .build();
 
@@ -76,13 +80,15 @@ public class AddressService {
             addressRepository.unsetMainByUserId(userId, id);
         }
 
+        var viaCep = cepService.lookup(request.getCep());
+
         address.setCep(request.getCep());
         address.setNumber(request.getNumber());
         address.setComplement(request.getComplement());
-        address.setStreet(request.getStreet());
-        address.setNeighborhood(request.getNeighborhood());
-        address.setCity(request.getCity());
-        address.setState(request.getState());
+        address.setStreet(org.springframework.util.StringUtils.hasText(request.getStreet()) ? request.getStreet() : viaCep.getStreet());
+        address.setNeighborhood(org.springframework.util.StringUtils.hasText(request.getNeighborhood()) ? request.getNeighborhood() : viaCep.getNeighborhood());
+        address.setCity(org.springframework.util.StringUtils.hasText(request.getCity()) ? request.getCity() : viaCep.getCity());
+        address.setState(org.springframework.util.StringUtils.hasText(request.getState()) ? request.getState() : viaCep.getState());
         address.setMain(request.isMain());
 
         return AddressResponse.from(addressRepository.save(address));
