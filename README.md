@@ -9,7 +9,7 @@ Aplicação web desenvolvida como teste técnico para a vaga de Desenvolvedor na
 
 | Camada | Tecnologia |
 |---|---|
-| Frontend | React + Vite + Tanstack Router |
+| Frontend | React + TypeScript + Vite + Tanstack Router |
 | Backend | Java + Spring Boot |
 | Banco de dados | PostgreSQL |
 | Autenticação | HTTP Basic |
